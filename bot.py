@@ -3,6 +3,7 @@ import responses
 import requests
 from PIL import Image
 from io import BytesIO
+from secrets import bot_api_key
 
 async def send_message(message, user_message, is_private):
     try:
@@ -52,10 +53,8 @@ async def send_message(message, user_message, is_private):
         print(e)
 
 
-
-
 def run_discord_bot():
-    TOKEN = 'MTA1NDYxMDQxNTM2NTEzNjM4NA.Gtpt6X.usYUn-yz3AW7SYFyFXdq99uxy1JiqquDSUX68A'
+    TOKEN = bot_api_key
     intents = discord.Intents.default()
     intents.message_content = True
     intents.members = True
@@ -90,21 +89,20 @@ def run_discord_bot():
         # Send the message "Hi (username)" to the channel
             await message.channel.send(f"Hi {message.author.mention}")
         if "sweety" in message.content:
-        # Send the message "Hi (username)" to the channel
+        # Send the message "shut it (username)" to the channel
             await message.channel.send(f"shut it {message.author.mention}, u cun")
         if "fuck" in message.content:
-        # Send the message "Hi (username)" to the channel
+        # Send the message "Hey hold up (username)" to the channel
             await message.channel.send(f"Hey hold up there fellow {message.author.mention}, ur a bitch :D")
      
-   
-          
+           
 
     @client.event
     async def on_member_join(member):
     # Send the message "Hello (username)" to the channel
         await member.guild.default_channel.send(f"Hey Cobba: {member.mention}, welcome m8")
                    
-
+    #annoyed my discord friends too much :D
     #@client.event
     #async def on_presence_update(before, after):
     # Check if the user's status has changed to "online"
