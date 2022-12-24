@@ -3,7 +3,7 @@ import requests
 
 def get_response(message: str) -> str:
     p_message = message.lower()
-
+    #array of words that will trigger certain responses
     gay_words = ['gay','nerds','butt','love','chris','terry','oi','wow','love','like','sweety']
     sweet_words = ['Hmmm','Back it up Terry','Nice!','Hommus Lovers :)','what THE!!!','good one','OK','Hmm does chris love boys']
     lols = ['oi no lols fancy boy','oi no lols butt man','oi dont be lollin','Oi no lols allowed','one more lol outta you and ban','reported','all reported']
