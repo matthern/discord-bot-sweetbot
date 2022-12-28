@@ -1,6 +1,7 @@
 import discord
 import responses
 import requests
+import os
 from PIL import Image
 from io import BytesIO
 from secrets import bot_api_key
@@ -8,8 +9,12 @@ from secrets import yt_api_key
 import youtube_dl
 from googleapiclient.discovery import build
 import time
+import asyncio
+
 
 VOTING_PERIOD = 10
+
+
 
 async def send_message(message, user_message, is_private):
     try:
@@ -120,8 +125,17 @@ def run_discord_bot():
     intents.message_content = True
     intents.members = True
     intents.presences = True
+    intents.voice_states = True
     client = discord.Client(intents=intents)
 
+    voice_clients = {}
+
+    yt_dl_opts = {'format': 'bestaudio/best'}
+    ytdl = youtube_dl.YoutubeDL(yt_dl_opts)
+    ffmpeg_options = {'options': "-vn"}
+
+    # This event happens when a message gets sent
+    
     @client.event
     async def on_ready():
         print(f'{client.user.name} is now running!')
@@ -198,8 +212,67 @@ def run_discord_bot():
             #player = await YTDLSource.from_url(url, loop=client.loop)
             #player.start()
         
-        
+        if message.content.startswith("!play"):
 
+              # Split the message into a list of words
+            words = message.content.split()
+
+        # Get the search query (everything after the !yt command)
+            query = " ".join(words[1:])
+
+        # Search YouTube for the query
+            yt_results = await search_youtube(query)
+
+        # Get the first result
+            video = yt_results[0]
+
+        # Get the URL of the video
+            url = f"https://www.youtube.com/watch?v={video['id']['videoId']}"
+
+     
+            try:
+                voice_client = await message.author.voice.channel.connect()
+                voice_clients[voice_client.guild.id] = voice_client
+            except:
+                print("error")
+
+            try:
+                #url = message.content.split()[1]
+
+                loop = asyncio.get_event_loop()
+                data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=False))
+
+                song = data['url']
+                player = discord.FFmpegPCMAudio(song, **ffmpeg_options, executable="/usr/bin/ffmpeg")
+
+                voice_clients[message.guild.id].play(player)
+
+            except Exception as err:
+                print(err)
+
+
+        if message.content.startswith("!pause"):
+            try:
+                voice_clients[message.guild.id].pause()
+            except Exception as err:
+                print(err)
+
+        # This resumes the current song playing if it's been paused
+        if message.content.startswith("!resume"):
+            try:
+                voice_clients[message.guild.id].resume()
+            except Exception as err:
+                print(err)
+
+        # This stops the current playing song
+        if message.content.startswith("!stop"):
+            try:
+                voice_clients[message.guild.id].stop()
+                await voice_clients[message.guild.id].disconnect()
+            except Exception as err:
+                print(err)
+
+        #vote testing
         if message.content.startswith('!vote'):
         # Get the options from the command arguments
             options = message.content.split()[1:]
@@ -242,7 +315,7 @@ def run_discord_bot():
            # Calculate the total number of votes
             total_votes = sum(int(votes) for votes in poll_results.values())
 
-# Check if there were any votes
+    # Check if there were any votes
             if total_votes == 0:
     # Send a message indicating that the poll did not receive any votes
                 await message.channel.send('No votes were cast in this poll.')

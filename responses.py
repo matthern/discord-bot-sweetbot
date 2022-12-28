@@ -54,6 +54,7 @@ def get_response(message: str) -> str:
     def get_help_message():
         message = "`Welcome to the SweetyBot help menu!`\n"
         message += "`Here are the available commands:`\n"
+        message += "`!play song title: Search youtube for a song and plays in the voice channel you are in. (bit shitty)`\n"
         message += "`!roll: Generates a random number between 0001 and 999.`\n"
         message += "`!image top text | bottom text: Creates a shitty meme with the specified top and bottom text.(thats a Pipe sign inbetween the text.)`\n"
         message += "`!worth top text: Creates a shittier meme with the specified top text.`\n"
