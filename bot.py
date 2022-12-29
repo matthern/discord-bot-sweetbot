@@ -11,10 +11,7 @@ from googleapiclient.discovery import build
 import time
 import asyncio
 
-
 VOTING_PERIOD = 10
-
-
 
 async def send_message(message, user_message, is_private):
     try:
@@ -27,7 +24,7 @@ async def send_message(message, user_message, is_private):
                 return 'Please provide enough text values for the image.'
 
            
-            #Tmultiple words input:
+            #multiple words input:
 
             text1 = ' '.join(words[1:]).split("|")[0]
             text2 = ' '.join(words[1:]).split("|")[1]
@@ -90,7 +87,80 @@ async def send_message(message, user_message, is_private):
                 return 'Sorry, there was an error sending the image.'
 
             return 'Image sent!'
+        
+             
 
+        if user_message.startswith('!pres'):
+            # Split the message into a list of words
+            words = user_message.split()
+
+            # Check if there are enough words to extract the text value
+            if len(words) < 2:
+                return 'Please provide the text value for the image.'
+
+            # Extract the text value from the message
+            text = ' '.join(words[1:])
+
+            # Construct the API URL with the text value
+            url = f"https://frenchnoodles.xyz/api/endpoints/presidentialalert/?text={text}"
+
+            # Send a GET request to the API
+            res = requests.get(url)
+
+            # Check if the request was successful
+            if res.status_code != 200:
+                return 'Sorry, there was an error retrieving the image.'
+
+            # Try to send the image as a Discord message, or print the error message if it's a JSON response. Also return as private message if command run as PM.
+            try:
+                image = discord.File(BytesIO(res.content), filename='image.png')
+                if is_private:
+                    await message.author.send(file=image)
+                else:
+                    await message.channel.send(file=image)
+            except:
+                print(res.json())
+                return 'Sorry, there was an error sending the image.'
+
+            return 'Image sent!'
+
+       
+        
+    
+
+        if user_message.startswith('!change'):
+            # Split the message into a list of words
+            words = user_message.split()
+
+            # Check if there are enough words to extract the text value
+            if len(words) < 2:
+                return 'Please provide the text value for the image.'
+
+            # Extract the text value from the message
+            text = ' '.join(words[1:])
+
+            # Construct the API URL with the text value
+            url = f"https://frenchnoodles.xyz/api/endpoints/changemymind/?text={text}"
+
+            # Send a GET request to the API
+            res = requests.get(url)
+
+            # Check if the request was successful
+            if res.status_code != 200:
+                return 'Sorry, there was an error retrieving the image.'
+
+            # Try to send the image as a Discord message, or print the error message if it's a JSON response. Also return as private message if command run as PM.
+            try:
+                image = discord.File(BytesIO(res.content), filename='image.png')
+                if is_private:
+                    await message.author.send(file=image)
+                else:
+                    await message.channel.send(file=image)
+            except:
+                print(res.json())
+                return 'Sorry, there was an error sending the image.'
+
+            return 'Image sent!'
 
         else:
             response = responses.get_response(user_message)
@@ -98,7 +168,9 @@ async def send_message(message, user_message, is_private):
                 await message.author.send(response)
             else:
                 await message.channel.send(response)
-
+      
+            
+        
     except Exception as e:
         print(e)
 
@@ -133,7 +205,7 @@ def run_discord_bot():
     yt_dl_opts = {'format': 'bestaudio/best'}
     ytdl = youtube_dl.YoutubeDL(yt_dl_opts)
     ffmpeg_options = {'options': "-vn"}
-
+    
     # This event happens when a message gets sent
     
     @client.event
@@ -189,35 +261,13 @@ def run_discord_bot():
         # Get the URL of the video
             url = f"https://www.youtube.com/watch?v={video['id']['videoId']}"
             await message.channel.send(f"is this the vid?:{url}")
-        # Join the voice channel
-            #voice_channel = message.author.voice.channel
-            #await voice_channel.connect()
-
-        # Create a player object
-            #player = await YTDLSource.from_url(url, loop=client.loop)
-            #player = await YTDLSource.from_url(url, loop=client.loop, stream=True)
-
-
-        # Start playing the audio
-            
-         #   voice_channel = discord.utils.get(client.guilds[0].channels, name='shopify-think-tank  ')
-         #   await voice_channel.connect()
-        # Check if the voice channel was found
-          #  if voice_channel is not None:
-        # Connect to the voice channel
-           #     await voice_channel.connect()
-           #     print('Connected to the voice channel')
-           # else:
-            #    print('Could not find the voice channel')
-            #player = await YTDLSource.from_url(url, loop=client.loop)
-            #player.start()
-        
+               
         if message.content.startswith("!play"):
 
               # Split the message into a list of words
             words = message.content.split()
 
-        # Get the search query (everything after the !yt command)
+        # Get the search query (everything after the !play command)
             query = " ".join(words[1:])
 
         # Search YouTube for the query
@@ -246,6 +296,7 @@ def run_discord_bot():
                 player = discord.FFmpegPCMAudio(song, **ffmpeg_options, executable="/usr/bin/ffmpeg")
 
                 voice_clients[message.guild.id].play(player)
+                await message.channel.send(f"Now Playing:{url}")
 
             except Exception as err:
                 print(err)
@@ -272,6 +323,7 @@ def run_discord_bot():
             except Exception as err:
                 print(err)
 
+       
         #vote testing
         if message.content.startswith('!vote'):
         # Get the options from the command arguments

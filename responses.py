@@ -55,12 +55,17 @@ def get_response(message: str) -> str:
         message = "`Welcome to the SweetyBot help menu!`\n"
         message += "`Here are the available commands:`\n"
         message += "`!play song title: Search youtube for a song and plays in the voice channel you are in. (bit shitty)`\n"
+        message += "`!stop, !pause and !resume also work`\n"
         message += "`!roll: Generates a random number between 0001 and 999.`\n"
         message += "`!image top text | bottom text: Creates a shitty meme with the specified top and bottom text.(thats a Pipe sign inbetween the text.)`\n"
         message += "`!worth top text: Creates a shittier meme with the specified top text.`\n"
+        message += "`!pres any text: Creates a shittier meme with the specified text.`\n"
+        message += "`!change any text: Creates an even shittier meme with the specified text.`\n"
         message += "`!yt search query: Returns a youtube video from your search string.`\n"
-        message += "`Don't mention Ligma or Mike lol, or talk smack about Sweety.`\n" 
         message += "`? prefixed to your message will return command/message privately.`\n"
+        message += "`\n`"
+        message += "`Don't mention Ligma or Mike lol, or talk smack about Sweety.`\n" 
+        message += "`\n`"
         message += "`Cheers Cobbs.`\n"
         
         return message
