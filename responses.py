@@ -6,24 +6,12 @@ def get_response(message: str) -> str:
    
     #array of words that will trigger certain responses
     
-    gay_words = ['gay','nerds','butt','love','chris','terry','oi','wow','love','like','sweety']
-    sweet_words = ['Hmmm','Back it up Terry','Nice!','Hommus Lovers :)','what THE!!!','good one','OK','Hmm does chris love boys']
     lols = ['oi no lols fancy boy','oi no lols butt man','oi dont be lollin','Oi no lols allowed','one more lol outta you and ban','reported','all reported']
     lol_in = ['lol','ha ha','haha','lel','lolz','lelz','lulz','hehe','keke','he he','heha']
     mike_man = ['mike','mick','michael']
-    mike = ['mike oxmall reporting in','they call me mike....mikey ox','is that you mikey boy? mike oxmall i think']
-    ligma_res = ['They call me Love LIggins','Oi Im big Liggy ya heard of me','What','dogs m8','oh hi cobbs :)']
-    ligma = ['deez','ligma','dogs','cuns','cuz']
     rob = ['sweetbotboy,','reported','oi']
     xmas = ['merry','happy new year','xmas']
     
-    if p_message == 'hello':
-        return 'Shut the heck!'
-
-    for word in ligma:
-        if word in p_message:
-            return random.choice(ligma_res)
-
     for word in xmas:
         if word in p_message:
             return 'Merry Xmas noob, Love Sweety xoxo'
@@ -31,21 +19,10 @@ def get_response(message: str) -> str:
     for word in rob:
         if word in p_message:
             return 'Oh hi rob :)'
-
-    for word in mike_man:
-        if word in p_message:
-            return random.choice(mike)
-
-    for word in gay_words:
-        if word in p_message:
-            return random.choice(sweet_words) 
-
+    
     if message == '!roll':
         return str(random.randint(000, 999))
 
-       
-    if p_message == 'dota2':
-        return 'You are a nerd'
 
     for word in lol_in:
         if word in p_message:
@@ -64,7 +41,6 @@ def get_response(message: str) -> str:
         message += "`!yt search query: Returns a youtube video from your search string.`\n"
         message += "`? prefixed to your message will return command/message privately.`\n"
         message += "`\n`"
-        message += "`Don't mention Ligma or Mike lol, or talk smack about Sweety.`\n" 
         message += "`\n`"
         message += "`Cheers Cobbs.`\n"
         
