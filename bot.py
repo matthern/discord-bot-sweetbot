@@ -4,14 +4,16 @@ import requests
 import os
 from PIL import Image
 from io import BytesIO
-from secrets import bot_api_key
-from secrets import yt_api_key
+#from secrets import bot_api_key
+#from secrets import yt_api_key
 import youtube_dl
 from googleapiclient.discovery import build
 import time
 import asyncio
 
-VOTING_PERIOD = 10
+bot_api_key = os.environ["BOT_API_KEY"]
+yt_api_key = os.environ["YT_API_KEY"]
+
 
 async def send_message(message, user_message, is_private):
     try:
@@ -234,15 +236,9 @@ def run_discord_bot():
         if 'happy birthday' in message.content.lower():
             await message.channel.send('🎈🎉 🎈🎉 Happy Birthday! 🎈🎉 🎈🎉')  
         
-        if "!cun" in message.content:
+        if "!hi" in message.content:
         # Send the message "Hi (username)" to the channel
             await message.channel.send(f"Hi {message.author.mention}")
-        if "sweety" in message.content:
-        # Send the message "shut it (username)" to the channel
-            await message.channel.send(f"shut it {message.author.mention}, u cun")
-        if "fuck" in message.content:
-        # Send the message "Hey hold up (username)" to the channel
-            await message.channel.send(f"Hey hold up there fellow {message.author.mention}, ur a bitch :D")
      
             # Check if the message starts with "!yt"
         if message.content.startswith("!yt"):
